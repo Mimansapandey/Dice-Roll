@@ -96,7 +96,7 @@ btnRoll.addEventListener('click',function(){
         }
        
         }
-        //1. Adding the current score to the active players score.
+        //1. Adding current score to active players score.
         
         //console.log(scores[activePlayer]);
         //scores[0] = scores[0] + currentScore;
