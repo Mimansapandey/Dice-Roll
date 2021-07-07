@@ -1,36 +1,49 @@
 'use strict';
+
 //Selecting
 const score0El = document.querySelector('#score--0');
 const score1El = document.getElementById('score--1');
 const diceEl = document.querySelector('.dice');
 
-//storing values of total scores.
+
+//storing values
 const scores = [0,0];
 
 const player1 = document.querySelector('.player--0');
 const player2 = document.querySelector('.player--1');
 
-//setting up the starting values
+//setting Scores
+
 let currentScore = 0;
 let activePlayer = 0;
 let totalScore = 0;
 let playing = true;
 
-//Buttons
 const btnRoll = document.querySelector('.btn--roll');
 const btnNew = document.querySelector('.btn--new');
 const btnHold = document.querySelector('.btn--hold');
+const btnRules = document.querySelector('.btn--rules');
 
-//Modal
+//modal class
+
 const modalWindow = document.querySelector('.modal');
-const modalWinner = document.querySelector('.winner');
+const modalWinner = document.querySelector('.winner')
 const modalClose = document.querySelector('.close');
 
-//display values
+//initial scores
+
 score0El.textContent = 0;
 score1El.textContent = 0;
 
-//switching player
+
+//Rules
+
+const closeRules = function(){
+    document.querySelector('.modal--1').classList.add('hidden');
+}
+
+//Switching players
+
 const switchPlayer = function(){
     document.getElementById(`current--${activePlayer}`).textContent = 0;
     activePlayer = activePlayer === 0 ? 1 : 0;
@@ -41,32 +54,34 @@ const switchPlayer = function(){
 
 diceEl.classList.add('hidden');
 
-//Die Roll Event
-btnRoll.addEventListener('click',function(){
+//Rolling Die
 
+btnRoll.addEventListener('click',function(){
+closeRules();
     if(playing){
+
      const diceroll = Math.trunc(Math.random()*6)+1;
+
     diceEl.classList.remove('hidden');
     diceEl.src = `dice-${diceroll}.png`; 
         
-    //displaying the current score
     if (diceroll !== 1){
-        currentScore += diceroll;
-   
-        //displaying the current score 
+        currentScore += diceroll;        
         document.getElementById(`current--${activePlayer}`).textContent = currentScore;
         
+ //switching Players
 
-    //switching player
     }else {
-    
+       
         switchPlayer();
     }
 }
 });
-    
+
+//Holding a Score
+
     btnHold.addEventListener('click', function(){
-        
+        closeRules();
         if (playing){
             
     // scores[activePlayer] += currentScore;
@@ -77,25 +92,25 @@ btnRoll.addEventListener('click',function(){
         document.getElementById(`score--${activePlayer}`).textContent =
         scores[activePlayer];
 
-        if(scores[activePlayer] >= 50) {
-            
+        if(scores[activePlayer] >= 20) {
             diceEl.classList.add('hidden');
-            
             playing = false;
-            
             document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
+
             document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');
+
             modalWinner.textContent = `Player ${activePlayer +1 } Wins! 🥳`;
             
             modalWindow.classList.remove('hidden');
             
-            //switching players
-        }else{
+            //Switching Players
             
+        }else{
             switchPlayer();  
         }
        
         }
+        
         //1. Adding current score to active players score.
         
         //console.log(scores[activePlayer]);
@@ -119,7 +134,6 @@ btnRoll.addEventListener('click',function(){
         activePlayer = 0;
         totalScore = 0;
         playing = true;
-        
         // diceEl.classList.remove('hidden');
         modalWindow.classList.add('hidden');
         document.querySelector(`.player--${activePlayer}`).classList.add('player--active');
@@ -127,12 +141,23 @@ btnRoll.addEventListener('click',function(){
         score1El.textContent = 0;
         document.getElementById('current--0').textContent = 0;
         document.getElementById('current--1').textContent = 0;
+        closeRules();
+        diceEl.classList.add('hidden');
     })
 
-    //Closing Modal
+    //Modal--window 
 
     modalClose.addEventListener('click', function(){
         modalWindow.classList.add('hidden');
     })
+
+    //Modal--Window1
+
+    btnRules.addEventListener('click', function(){
+        document.querySelector('.modal--1').classList.remove('hidden');
+        diceEl.classList.add('hidden');
+    })
+
+    document.querySelector('.closebtn').addEventListener('click',closeRules)
 
 
